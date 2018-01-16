@@ -20,8 +20,14 @@ restService.post('/hook', function(req, res){
     app.ask("Hi this is welcome intent");
   }
 
+  function addNote(app) {
+    console.log(req)
+  }
+
+
   const actionMap = new Map();
   actionMap.set('input.welcome', welcomeIntent);
+  actionMap.set('add.note', addNote)
   app.handleRequest(actionMap);
 
 })
