@@ -1,13 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const ApiAiApp = require('actions-on-google').ApiAiApp;
+const DialogFlowApp = require('actions-on-google').DialogFlowApp;
 
 const restService = express();
 restService.use(bodyParser.json());
 
 restService.post('/hook', function(req, res){
   console.log('hook request');
-  const app = new ApiAiApp({
+  const app = new DialogFlowApp({
     request : req,
     response : res
   });
