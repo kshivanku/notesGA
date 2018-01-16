@@ -21,8 +21,8 @@ restService.post('/hook', function(req, res){
   }
 
   function addNote(app) {
-    console.log(req.body)
-    app.tell('note added');
+    console.log(req.body.result.resolvedQuery);
+    app.tell("note added");
   }
 
 
