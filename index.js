@@ -4,6 +4,9 @@ const DialogFlowApp = require('actions-on-google').DialogFlowApp;
 
 const restService = express();
 restService.use(bodyParser.json());
+restService.listen((process.env.PORT || 5000), function(){
+  console.log('server listening');
+})
 
 restService.post('/hook', function(req, res){
   console.log('hook request');
@@ -20,9 +23,5 @@ restService.post('/hook', function(req, res){
   const actionMap = new Map();
   actionMap.set('input.welcome', welcomeIntent);
   app.handleRequest(actionMap);
-
-  restService.listen((process.env.PORT || 5000), function(){
-    console.log('server listening');
-  })
 
 })
