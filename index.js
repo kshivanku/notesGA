@@ -25,10 +25,14 @@ restService.post('/hook', function(req, res){
     app.tell("note added");
   }
 
+  function removeNote(app) {
+    app.tell("note removed");
+  }
 
   const actionMap = new Map();
   actionMap.set('input.welcome', welcomeIntent);
-  actionMap.set('add.note', addNote)
+  actionMap.set('add.note', addNote);
+  actionMap.set('remove.note', removeNote);
   app.handleRequest(actionMap);
 
 })
