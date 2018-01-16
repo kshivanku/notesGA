@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const DialogFlowApp = require('actions-on-google').DialogFlowApp;
+const DialogflowApp = require('actions-on-google').DialogflowApp;
 
 const restService = express();
 restService.use(bodyParser.json());
@@ -10,7 +10,7 @@ restService.listen((process.env.PORT || 5000), function(){
 
 restService.post('/hook', function(req, res){
   console.log('hook request');
-  const app = new DialogFlowApp({
+  const app = new DialogflowApp({
     request : req,
     response : res
   });
