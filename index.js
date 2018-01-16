@@ -19,6 +19,7 @@ restService.post('/hook', function(req, res){
 
   const actionMap = new Map();
   actionMap.set('input.welcome', welcomeIntent);
+  app.handleRequest(actionMap);
 
   restService.listen((process.env.PORT || 5000), function(){
     console.log('server listening');
