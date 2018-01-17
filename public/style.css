@@ -12,6 +12,7 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
+  background-color: #f0f0f0;
 }
 
 #header {
@@ -19,7 +20,6 @@ body {
   height: 60px;
   width: 100vw;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.12), 0px 4px 4px 0px rgba(0, 0, 0, 0.24);
-  position: fixed;
   margin-bottom: 32px;
 }
 
@@ -50,6 +50,7 @@ body {
   padding: 16px;
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 2px 0px rgba(0, 0, 0, 0.24);
   margin-bottom: 16px;
+  background-color: #fff;
 }
 
 .content {
