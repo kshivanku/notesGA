@@ -215,6 +215,6 @@ function getDate(){
   console.log("RAW");
   console.log(ny_time);
   console.log("FORMATTED");
-  console.log(ny_time.format(ha z))
+  console.log(ny_time.format('ha z'));
   return date;
 }
