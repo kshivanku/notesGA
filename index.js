@@ -213,8 +213,8 @@ function getDate(){
   // console.log(moment.tz.guess());
   // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
   var full_datetime = moment().tz("America/New_York").format();
-  var date = time.split("T")[0];
-  var timeArr = time.split("T")[1].split(":");
+  var date = full_datetime.split("T")[0];
+  var timeArr = full_datetime.split("T")[1].split(":");
   var time = timeArr[0] + ":" + timeArr[1]
   var final_time = date + ", " + time;
   return final_time;
