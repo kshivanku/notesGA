@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const DialogflowApp = require('actions-on-google').DialogflowApp;
 const fs = require('fs');
+const moment_timezone = require('moment-timezone');
 
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
@@ -207,6 +208,11 @@ restService.post('/hook', function(req, res){
 
 function getDate(){
   var date = new Date();
+  var ny_date = date.clone().tz("America/New_York");
+  console.log("RAW");
+  console.log(ny_date);
+  console.log("FORMATTED");
+  console.log(ny_date.format())
   date = date.toString();
   // date = date.split(" GMT")[0];
   return date;
