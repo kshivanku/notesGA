@@ -25,6 +25,8 @@ restService.post('/hook', function(req, res){
   function addNote(app) {
     var raw_content = req.body.result.resolvedQuery;
     var note_content = raw_content.split("add a note ")[1];
+    console.log('raw_content: ', raw_content);
+    console.log('note_content: ', note_content);
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if (database.length == 0) {
       database = new Array();
@@ -54,8 +56,8 @@ restService.post('/hook', function(req, res){
   actionMap.set('input.welcome', welcomeIntent);
   actionMap.set('add.note', addNote);
   actionMap.set('remove.note', removeNote);
-  acrionMap.set('continue.note', continueNote);
-  acrionMap.set('repeat.note', repeatNote)
+  actionMap.set('continue.note', continueNote);
+  actionMap.set('repeat.note', repeatNote)
   app.handleRequest(actionMap);
 
 })
