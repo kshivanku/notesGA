@@ -137,19 +137,19 @@ restService.post('/hook', function(req, res){
         cameFromUnknown = true;
         foundContext = true;
         addNote(app);
-        break;
+        i = contexts.length;
       }
       else if(contexts[i].name == 'editNote') {
         cameFromUnknown = true;
         foundContext = true;
         editNote(app);
-        break;
+        i = contexts.length;
       }
       else if(contexts[i].name == 'continueNote') {
         cameFromUnknown = true;
         foundContext = true;
         continueNote(app);
-        break;
+        i = contexts.length;
       }
     }
     if(!foundContext) {
