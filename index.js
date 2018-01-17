@@ -66,7 +66,7 @@ restService.post('/hook', function(req, res){
       database.unshift(note_content);
       fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
     }
-    app.tell("note edited: " + note_content);
+    app.ask("note edited: " + note_content);
   }
 
   function repeatNote(app) {
