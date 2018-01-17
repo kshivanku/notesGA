@@ -101,7 +101,7 @@ restService.post('/hook', function(req, res){
       }
       else {
         app.setContext("editnote", 1);
-        app.ask("note changed");
+        app.ask("ready to edit");
       }
     }
   }
