@@ -213,8 +213,8 @@ function getDate(){
   var utc_time = moment.tz(date, "UTC");
   var ny_time = utc_time.clone().tz("America/New_York");
   console.log("RAW");
-  console.log(ny_date);
+  console.log(ny_time);
   console.log("FORMATTED");
-  console.log(ny_date.format())
+  console.log(ny_time.format())
   return date;
 }
