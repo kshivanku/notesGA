@@ -20,6 +20,7 @@
   "dependencies": {
     "actions-on-google": "^1.7.0",
     "body-parser": "^1.18.2",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "moment-timezone": "^0.5.14"
   }
 }
