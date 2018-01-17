@@ -23,9 +23,14 @@ restService.post('/hook', function(req, res){
     app.ask("Hi this is audio notes");
   }
 
-  function addNote(app) {
+  function addNote(app, isRawNote) {
     var raw_content = req.body.result.resolvedQuery;
-    var note_content = raw_content.split("add a note ")[1];
+    if(isRawNote) {
+      var note_content = raw_content.split("add a note ")[1];
+    }
+    else {
+      var note_content = raw_content;
+    }
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if (database.length == 0) {
       database = new Array();
@@ -99,7 +104,12 @@ restService.post('/hook', function(req, res){
   function inputUnknown(app) {
     var contexts = req.body.result.contexts;
     console.log(contexts);
-    app.tell("input unknown");
+    for (var i = 0 ; i < contexts.length ; i++) {
+      if(contexts[i].name == 'addNote') {
+        addNote(app, true);
+      }
+    }
+    // app.tell("input unknown");
   }
 
   const actionMap = new Map();
