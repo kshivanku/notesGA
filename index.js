@@ -26,8 +26,6 @@ restService.post('/hook', function(req, res){
   function addNote(app) {
     var raw_content = req.body.result.resolvedQuery;
     var note_content = raw_content.split("add a note ")[1];
-    console.log('raw_content: ', raw_content);
-    console.log('note_content: ', note_content);
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if (database.length == 0) {
       database = new Array();
@@ -38,19 +36,40 @@ restService.post('/hook', function(req, res){
   }
 
   function removeNote(app) {
-    app.tell("note removed");
+    var database = JSON.parse(fs.readFileSync(databaseFile));
+    if(database.length > 0) {
+      var removed_note = database.splice(0,1);
+      fs.writeFileSync(databaseFile, JSON.stringify(database));
+    }
+    app.ask("note removed: " + removed_note);
   }
 
   function continueNote(app) {
-    app.tell("continue note");
+    var raw_content = req.body.result.resolvedQuery;
+    var note_content = raw_content.split("continue note ")[1];
+    var database = JSON.parse(fs.readFileSync(databaseFile));
+    if(database.length > 0) {
+      var latest_note = database.splice(0, 1);
+      latest_note += note_content;
+      database.unshift(latest_note);
+      fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+    }
+    app.ask("note changed to: " + latest_note);
   }
 
   function editNote(app) {
+    var raw_content = req.body.result.resolvedQuery;
+    var note_content = raw_content.split("continue note ")[1];
+    var database = JSON.parse(fs.readFileSync(databaseFile));
+    if(database.length > 0) {
+      var latest_note = database.splice(0, 1);
+      database.unshift(note_content);
+      fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+    }
     app.tell("edit note");
   }
 
   function repeatNote(app) {
-    // app.tell("here is your last note");
     var database = JSON.parse(fs.readFileSync(databaseFile));
     app.ask(database[0])
   }
