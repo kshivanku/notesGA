@@ -48,6 +48,7 @@ restService.post('/hook', function(req, res){
       else {
         var newEntry = {
           "source": "Google Assistant",
+          "date": getDate(),
           "content": note_content
         }
         database.unshift(newEntry);
@@ -91,6 +92,7 @@ restService.post('/hook', function(req, res){
           var newContent = latest_note[0].content + " " + note_content;
           var newEntry = {
             "source": "Google Assistant",
+            "date": getDate(),
             "content": newContent
           }
           database.unshift(newEntry);
@@ -125,6 +127,7 @@ restService.post('/hook', function(req, res){
         else {
           var newEntry = {
             "source": "Google Assistant",
+            "date": getDate(),
             "content": note_content
           }
           database.unshift(newEntry);
@@ -204,3 +207,10 @@ restService.post('/hook', function(req, res){
   app.handleRequest(actionMap);
 
 })
+
+function getDate(){
+  var date = new Date();
+  date = date.toString();
+  date = date.split(" GMT")[0];
+  return date;
+}
