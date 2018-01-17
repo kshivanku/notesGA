@@ -25,7 +25,7 @@ restService.post('/hook', function(req, res){
 
   function addNote(app, isRawNote) {
     var raw_content = req.body.result.resolvedQuery;
-    if(isRawNote) {
+    if(isRawNote == 'isRawNote') {
       var note_content = raw_content.split("add a note ")[1];
     }
     else {
@@ -106,7 +106,7 @@ restService.post('/hook', function(req, res){
     console.log(contexts);
     for (var i = 0 ; i < contexts.length ; i++) {
       if(contexts[i].name == 'addNote') {
-        addNote(app, true);
+        addNote(app, 'isRawNote');
       }
     }
     // app.tell("input unknown");
