@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const DialogflowApp = require('actions-on-google').DialogflowApp;
 const fs = require('fs');
-const moment_timezone = require('moment-timezone');
+const moment = require('moment-timezone');
 
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
