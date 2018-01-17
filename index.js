@@ -131,6 +131,7 @@ restService.post('/hook', function(req, res){
     var contexts = req.body.result.contexts;
     console.log(contexts);
     for (var i = 0 ; i < contexts.length ; i++) {
+      console.log(contexts[i].name);
       if(contexts[i].name == 'addNote') {
         cameFromUnknown = true;
         addNote(app);
