@@ -212,6 +212,7 @@ function getDate(){
   // date = date.split(" GMT")[0];
   // var utc_time = moment.tz(date, "UTC");
   // var ny_time = utc_time.clone().tz("America/New_York");
+  console.log(moment.tz.guess());
   var time = moment().tz(moment.tz.guess()).format();
   // console.log("RAW");
   // console.log(ny_time);
