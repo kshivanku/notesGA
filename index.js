@@ -208,12 +208,13 @@ restService.post('/hook', function(req, res){
 
 function getDate(){
   var date = new Date();
-  var ny_date = date.clone().tz("America/New_York");
+  date = date.toString();
+  date = date.split(" GMT")[0];
+  var utc_time = moment.tz(date, "UTC");
+  var ny_time = utc_time.clone().tz("America/New_York");
   console.log("RAW");
   console.log(ny_date);
   console.log("FORMATTED");
   console.log(ny_date.format())
-  date = date.toString();
-  // date = date.split(" GMT")[0];
   return date;
 }
