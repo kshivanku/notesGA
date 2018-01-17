@@ -43,7 +43,7 @@ restService.post('/hook', function(req, res){
       app.ask('note added: ' + note_content);
     }
     else {
-      app.setContext("addNote", 1);
+      app.setContext("addnote", 1);
       app.ask("What note do you want to add?");
     }
   }
@@ -76,7 +76,7 @@ restService.post('/hook', function(req, res){
         app.ask("note changed to: " + latest_note);
       }
       else {
-        app.setContext("continueNote", 1);
+        app.setContext("continuenote", 1);
         app.ask("What do you want to add to the previous note?");
       }
     }
@@ -100,7 +100,7 @@ restService.post('/hook', function(req, res){
         app.ask("note edited: " + note_content);
       }
       else {
-        app.setContext("editNote", 1);
+        app.setContext("editnote", 1);
         app.ask("What do you want to change the note to?");
       }
     }
@@ -133,19 +133,19 @@ restService.post('/hook', function(req, res){
     console.log(contexts);
     for (var i = 0 ; i < contexts.length ; i++) {
       console.log(contexts[i].name);
-      if(contexts[i].name == 'addNote') {
+      if(contexts[i].name == 'addnote') {
         cameFromUnknown = true;
         foundContext = true;
         addNote(app);
         i = contexts.length;
       }
-      else if(contexts[i].name == 'editNote') {
+      else if(contexts[i].name == 'editnote') {
         cameFromUnknown = true;
         foundContext = true;
         editNote(app);
         i = contexts.length;
       }
-      else if(contexts[i].name == 'continueNote') {
+      else if(contexts[i].name == 'continuenote') {
         cameFromUnknown = true;
         foundContext = true;
         continueNote(app);
