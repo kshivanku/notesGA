@@ -23,7 +23,6 @@ restService.post('/hook', function(req, res){
   });
 
   function welcomeIntent(app){
-    console.log("inside welcomeIntent");
     app.ask("Hi this is audio notes.");
   }
 
@@ -166,9 +165,7 @@ restService.post('/hook', function(req, res){
   function inputUnknown(app) {
     var contexts = req.body.result.contexts;
     var foundContext = false;
-    console.log(contexts);
     for (var i = 0 ; i < contexts.length ; i++) {
-      console.log(contexts[i].name);
       if(contexts[i].name == 'addnote') {
         cameFromUnknown = true;
         foundContext = true;
@@ -211,6 +208,6 @@ restService.post('/hook', function(req, res){
 function getDate(){
   var date = new Date();
   date = date.toString();
-  date = date.split(" GMT")[0];
+  // date = date.split(" GMT")[0];
   return date;
 }
