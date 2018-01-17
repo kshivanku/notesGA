@@ -88,8 +88,7 @@ restService.post('/hook', function(req, res){
         }
         else {
           var latest_note = database.splice(0, 1);
-          console.log(latest_note);
-          var newContent = latest_note.content + " " + note_content;
+          var newContent = latest_note[0].content + " " + note_content;
           var newEntry = {
             "source": "Google Assistant",
             "content": newContent
