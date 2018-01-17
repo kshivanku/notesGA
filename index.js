@@ -77,7 +77,7 @@ restService.post('/hook', function(req, res){
       var note_content = raw_content;
     }
     else {
-      var note_content = raw_content.split(splitPhrase)1];
+      var note_content = raw_content.split(splitPhrase)[1];
     }
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if(database.length > 0) {
