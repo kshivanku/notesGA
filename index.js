@@ -129,26 +129,30 @@ restService.post('/hook', function(req, res){
 
   function inputUnknown(app) {
     var contexts = req.body.result.contexts;
+    var foundContext = false;
     console.log(contexts);
     for (var i = 0 ; i < contexts.length ; i++) {
       console.log(contexts[i].name);
       if(contexts[i].name == 'addNote') {
         cameFromUnknown = true;
+        foundContext = true;
         addNote(app);
         break;
       }
       else if(contexts[i].name == 'editNote') {
         cameFromUnknown = true;
+        foundContext = true;
         editNote(app);
         break;
       }
       else if(contexts[i].name == 'continueNote') {
         cameFromUnknown = true;
+        foundContext = true;
         continueNote(app);
         break;
       }
     }
-    if(!cameFromUnknown) {
+    if(!foundContext) {
       app.ask("Please say that again");
     }
   }
