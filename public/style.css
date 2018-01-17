@@ -1,0 +1,51 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+#header {
+  background-color: #002C6F;
+  height: 60px;
+  width: 100vw;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.12), 0px 4px 4px 0px rgba(0, 0, 0, 0.24);
+  position: static;
+}
+
+.container {
+  max-width: 960px;
+  margin: auto;
+}
+
+.container h1 {
+  display: inline-block;
+  color: #fff;
+  font-size: 24px;
+  line-height: 60px;
+}
+
+.textbutton {
+  display: inline-block;
+  color: #fff;
+  text-transform: uppercase;
+  float: right;
+  cursor: pointer;
+  line-height: 60px;
+}
+
+#notes_list p {
+  width: 100%;
+  padding: 16px;
+  color: #212121;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 2px 0px rgba(0, 0, 0, 0.24);
+}
