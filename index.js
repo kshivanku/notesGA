@@ -88,10 +88,11 @@ restService.post('/hook', function(req, res){
         }
         else {
           var latest_note = database.splice(0, 1);
-          latest_note.content += " " + note_content;
+          console.log(latest_note);
+          var newContent = latest_note.content + " " + note_content;
           var newEntry = {
             "source": "Google Assistant",
-            "content": latest_note.content
+            "content": newContent
           }
           database.unshift(newEntry);
           fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
