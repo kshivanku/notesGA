@@ -93,7 +93,7 @@ restService.post('/hook', function(req, res){
             "source": "Google Assistant",
             "content": latest_note
           }
-          database.unshift(latest_note);
+          database.unshift(newEntry);
           fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
           app.ask("note appended");
         }
