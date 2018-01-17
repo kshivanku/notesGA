@@ -8,6 +8,7 @@ var cameFromUnknown = false;
 var cancelPhrase = "scratch note";
 
 const restService = express();
+restService.use(express.static("public"));
 restService.use(bodyParser.json());
 restService.listen((process.env.PORT || 5000), function(){
   console.log('server listening');
