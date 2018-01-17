@@ -207,14 +207,15 @@ restService.post('/hook', function(req, res){
 })
 
 function getDate(){
-  var date = new Date();
-  date = date.toString();
-  date = date.split(" GMT")[0];
-  var utc_time = moment.tz(date, "UTC");
-  var ny_time = utc_time.clone().tz("America/New_York");
-  console.log("RAW");
-  console.log(ny_time);
-  console.log("FORMATTED");
-  console.log(ny_time.format('ha z'));
-  return date;
+  // var date = new Date();
+  // date = date.toString();
+  // date = date.split(" GMT")[0];
+  // var utc_time = moment.tz(date, "UTC");
+  // var ny_time = utc_time.clone().tz("America/New_York");
+  var time = moment().tz(moment.tz.guess()).format();
+  // console.log("RAW");
+  // console.log(ny_time);
+  // console.log("FORMATTED");
+  // console.log(ny_time.format('ha z'));
+  return time;
 }
