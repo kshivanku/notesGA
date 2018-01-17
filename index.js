@@ -6,7 +6,7 @@ const fs = require('fs');
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
 var cancelPhrase = "scratch note";
-var splitPhrase = "start quote ";
+var splitPhrase = ". Begin ";
 
 const restService = express();
 restService.use(express.static("public"));
