@@ -5,6 +5,7 @@ const fs = require('fs');
 
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
+var cancelPhrase = "scratch note";
 
 const restService = express();
 restService.use(bodyParser.json());
@@ -38,9 +39,15 @@ restService.post('/hook', function(req, res){
       database = new Array();
     }
     if(note_content){
-      database.unshift(note_content);
-      fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
-      app.ask('note added');
+      if(note_content.indexOf(cancelPhrase) != -1) {
+        app.setContext("addnote", 1);
+        app.ask("ok try again, ready to add");
+      }
+      else {
+        database.unshift(note_content);
+        fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+        app.ask('note added');
+      }
     }
     else {
       app.setContext("addnote", 1);
@@ -69,11 +76,17 @@ restService.post('/hook', function(req, res){
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if(database.length > 0) {
       if(note_content) {
-        var latest_note = database.splice(0, 1);
-        latest_note += " " + note_content;
-        database.unshift(latest_note);
-        fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
-        app.ask("note appended");
+        if(note_content.indexOf(cancelPhrase) != -1) {
+          app.setContext("continuenote", 1);
+          app.ask("ok try again, ready to continue");
+        }
+        else {
+          var latest_note = database.splice(0, 1);
+          latest_note += " " + note_content;
+          database.unshift(latest_note);
+          fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+          app.ask("note appended");
+        }
       }
       else {
         app.setContext("continuenote", 1);
@@ -95,9 +108,15 @@ restService.post('/hook', function(req, res){
     if(database.length > 0) {
       var latest_note = database.splice(0, 1);
       if(note_content) {
-        database.unshift(note_content);
-        fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
-        app.ask("note edited");
+        if(note_content.indexOf(cancelPhrase) != -1) {
+          app.setContext("editnote", 1);
+          app.ask("ok try again, ready to edit");
+        }
+        else {
+          database.unshift(note_content);
+          fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+          app.ask("note edited");
+        }
       }
       else {
         app.setContext("editnote", 1);
