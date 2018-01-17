@@ -4,6 +4,7 @@ const DialogflowApp = require('actions-on-google').DialogflowApp;
 const fs = require('fs');
 
 var databaseFile = "public/database/database.json";
+var cameFromUnknown = false;
 
 const restService = express();
 restService.use(bodyParser.json());
@@ -23,13 +24,14 @@ restService.post('/hook', function(req, res){
     app.ask("Hi this is audio notes");
   }
 
-  function addNote(app, isRawNote) {
+  function addNote(app) {
     var raw_content = req.body.result.resolvedQuery;
-    if(isRawNote == 'isRawNote') {
-      var note_content = raw_content.split("add a note ")[1];
+    if(cameFromUnknown) {
+      cameFromUnknown = false;
+      var note_content = raw_content;
     }
     else {
-      var note_content = raw_content;
+      var note_content = raw_content.split("add a note ")[1];
     }
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if (database.length == 0) {
@@ -57,27 +59,51 @@ restService.post('/hook', function(req, res){
 
   function continueNote(app) {
     var raw_content = req.body.result.resolvedQuery;
-    var note_content = raw_content.split("continue note ")[1];
+    if(cameFromUnknown) {
+      cameFromUnknown = false;
+      var note_content = raw_content;
+    }
+    else {
+      var note_content = raw_content.split("continue note ")[1];
+    }
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if(database.length > 0) {
-      var latest_note = database.splice(0, 1);
-      latest_note += " " + note_content;
-      database.unshift(latest_note);
-      fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+      if(note_content) {
+        var latest_note = database.splice(0, 1);
+        latest_note += " " + note_content;
+        database.unshift(latest_note);
+        fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+        app.ask("note changed to: " + latest_note);
+      }
+      else {
+        app.setContext("continueNote", 1);
+        app.ask("What do you want to add to the previous note?");
+      }
     }
-    app.ask("note changed to: " + latest_note);
   }
 
   function editNote(app) {
     var raw_content = req.body.result.resolvedQuery;
-    var note_content = raw_content.split("edit note ")[1];
+    if(cameFromUnknown) {
+      cameFromUnknown = false;
+      var note_content = raw_content;
+    }
+    else {
+      var note_content = raw_content.split("edit note ")[1];
+    }
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if(database.length > 0) {
       var latest_note = database.splice(0, 1);
-      database.unshift(note_content);
-      fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+      if(note_content) {
+        database.unshift(note_content);
+        fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+        app.ask("note edited: " + note_content);
+      }
+      else {
+        app.setContext("editNote", 1);
+        app.ask("What do you want to change the note to?");
+      }
     }
-    app.ask("note edited: " + note_content);
   }
 
   function repeatNote(app) {
@@ -106,10 +132,24 @@ restService.post('/hook', function(req, res){
     console.log(contexts);
     for (var i = 0 ; i < contexts.length ; i++) {
       if(contexts[i].name == 'addNote') {
-        addNote(app, 'isRawNote');
+        cameFromUnknown = true;
+        addNote(app);
+        break;
+      }
+      else if(contexts[i].name == 'editNote') {
+        cameFromUnknown = true;
+        editNote(app);
+        break;
+      }
+      else if(contexts[i].name == 'continueNote') {
+        cameFromUnknown = true;
+        continueNote(app);
+        break;
       }
     }
-    // app.tell("input unknown");
+    if(!cameFromUnknown) {
+      app.ask("Please say that again");
+    }
   }
 
   const actionMap = new Map();
