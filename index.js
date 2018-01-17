@@ -91,6 +91,7 @@ restService.post('/hook', function(req, res){
   actionMap.set('add.note', addNote);
   actionMap.set('remove.note', removeNote);
   actionMap.set('continue.note', continueNote);
+  actionMap.set('edit.note', editNote)
   actionMap.set('repeat.note', repeatNote);
   actionMap.set('delete.all', deleteAll);
   actionMap.set('status.check', statusCheck);
