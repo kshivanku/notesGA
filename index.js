@@ -212,7 +212,10 @@ function getDate(){
   // date = date.split(" GMT")[0];
   // console.log(moment.tz.guess());
   // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
-  var time = moment().tz("America/New_York").format();
-  console.log(time.split("T")[0])
-  return time;
+  var full_datetime = moment().tz("America/New_York").format();
+  var date = time.split("T")[0];
+  var timeArr = time.split("T")[1].split(":");
+  var time = timeArr[0] + ":" + timeArr[1]
+  var final_time = date + ", " + time;
+  return final_time;
 }
