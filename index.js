@@ -21,7 +21,7 @@ restService.post('/hook', function(req, res){
 
   function welcomeIntent(app){
     console.log("inside welcomeIntent");
-    app.ask("Hi this is audio notes");
+    app.ask("Hi this is audio notes.");
   }
 
   function addNote(app) {
@@ -40,11 +40,11 @@ restService.post('/hook', function(req, res){
     if(note_content){
       database.unshift(note_content);
       fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
-      app.ask('note added: ' + note_content);
+      app.ask('note added');
     }
     else {
       app.setContext("addnote", 1);
-      app.ask("What note do you want to add?");
+      app.ask("ready to add");
     }
   }
 
@@ -54,7 +54,7 @@ restService.post('/hook', function(req, res){
       var removed_note = database.splice(0,1);
       fs.writeFileSync(databaseFile, JSON.stringify(database));
     }
-    app.ask("note removed: " + removed_note);
+    app.ask("note removed");
   }
 
   function continueNote(app) {
@@ -73,11 +73,11 @@ restService.post('/hook', function(req, res){
         latest_note += " " + note_content;
         database.unshift(latest_note);
         fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
-        app.ask("note changed to: " + latest_note);
+        app.ask("note appended");
       }
       else {
         app.setContext("continuenote", 1);
-        app.ask("What do you want to add to the previous note?");
+        app.ask("ready to continue");
       }
     }
   }
@@ -97,11 +97,11 @@ restService.post('/hook', function(req, res){
       if(note_content) {
         database.unshift(note_content);
         fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
-        app.ask("note edited: " + note_content);
+        app.ask("note edited");
       }
       else {
         app.setContext("editnote", 1);
-        app.ask("What do you want to change the note to?");
+        app.ask("note changed");
       }
     }
   }
