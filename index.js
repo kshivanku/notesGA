@@ -20,7 +20,7 @@ restService.post('/hook', function(req, res){
 
   function welcomeIntent(app){
     console.log("inside welcomeIntent");
-    app.ask("Hi this is welcome intent");
+    app.ask("Hi this is audio notes");
   }
 
   function addNote(app) {
@@ -30,9 +30,15 @@ restService.post('/hook', function(req, res){
     if (database.length == 0) {
       database = new Array();
     }
-    database.unshift(note_content);
-    fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
-    app.ask('note added: ' + note_content);
+    if(note_content){
+      database.unshift(note_content);
+      fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+      app.ask('note added: ' + note_content);
+    }
+    else {
+      app.setContext("addNote", 1);
+      app.ask("What note do you want to add?");
+    }
   }
 
   function removeNote(app) {
@@ -86,6 +92,16 @@ restService.post('/hook', function(req, res){
     app.ask("There are " + database.length + " notes");
   }
 
+  function thankYou(app){
+    app.tell("Ok!");
+  }
+
+  function inputUnknown(app) {
+    var contexts = req.body.result.contexts;
+    console.log(contexts);
+    app.tell("input unknown");
+  }
+
   const actionMap = new Map();
   actionMap.set('input.welcome', welcomeIntent);
   actionMap.set('add.note', addNote);
@@ -95,6 +111,8 @@ restService.post('/hook', function(req, res){
   actionMap.set('repeat.note', repeatNote);
   actionMap.set('delete.all', deleteAll);
   actionMap.set('status.check', statusCheck);
+  actionMap.set('thank.you', thankYou);
+  actionMap.set('input.unknown', inputUnknown);
   app.handleRequest(actionMap);
 
 })
