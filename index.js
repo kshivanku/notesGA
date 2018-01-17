@@ -210,14 +210,9 @@ function getDate(){
   // var date = new Date();
   // date = date.toString();
   // date = date.split(" GMT")[0];
-  // var utc_time = moment.tz(date, "UTC");
-  // var ny_time = utc_time.clone().tz("America/New_York");
-  console.log(moment.tz.guess());
-  console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
-  var time = moment().tz(Intl.DateTimeFormat().resolvedOptions().timeZone).format();
-  // console.log("RAW");
-  // console.log(ny_time);
-  // console.log("FORMATTED");
-  // console.log(ny_time.format('ha z'));
+  // console.log(moment.tz.guess());
+  // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
+  var time = moment().tz("America/New_York").format();
+  console.log(time.split("T")[0])
   return time;
 }
