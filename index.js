@@ -50,7 +50,7 @@ restService.post('/hook', function(req, res){
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if(database.length > 0) {
       var latest_note = database.splice(0, 1);
-      latest_note += note_content;
+      latest_note += " " + note_content;
       database.unshift(latest_note);
       fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
     }
@@ -59,7 +59,7 @@ restService.post('/hook', function(req, res){
 
   function editNote(app) {
     var raw_content = req.body.result.resolvedQuery;
-    var note_content = raw_content.split("continue note ")[1];
+    var note_content = raw_content.split("edit note ")[1];
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if(database.length > 0) {
       var latest_note = database.splice(0, 1);
@@ -74,12 +74,26 @@ restService.post('/hook', function(req, res){
     app.ask(database[0])
   }
 
+  function deleteAll(app) {
+    var database = JSON.parse(fs.readFileSync(databaseFile));
+    var newDatabase = [];
+    fs.writeFileSync(databaseFile, JSON.stringify(newDatabase, null, 2));
+    app.ask("Deleted " + database.length + " notes");
+  }
+
+  function statusCheck(app) {
+    var database = JSON.parse(fs.readFileSync(databaseFile));
+    app.ask("There are " + database.length + " notes");
+  }
+
   const actionMap = new Map();
   actionMap.set('input.welcome', welcomeIntent);
   actionMap.set('add.note', addNote);
   actionMap.set('remove.note', removeNote);
   actionMap.set('continue.note', continueNote);
-  actionMap.set('repeat.note', repeatNote)
+  actionMap.set('repeat.note', repeatNote);
+  actionMap.set('delete.all', deleteAll);
+  actionMap.set('status.check', statusCheck);
   app.handleRequest(actionMap);
 
 })
