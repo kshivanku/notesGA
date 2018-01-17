@@ -6,6 +6,7 @@ const fs = require('fs');
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
 var cancelPhrase = "scratch note";
+var splitPhrase = "start quote ";
 
 const restService = express();
 restService.use(express.static("public"));
@@ -33,7 +34,7 @@ restService.post('/hook', function(req, res){
       var note_content = raw_content;
     }
     else {
-      var note_content = raw_content.split("add a note ")[1];
+      var note_content = raw_content.split(splitPhrase)[1];
     }
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if (database.length == 0) {
@@ -45,7 +46,11 @@ restService.post('/hook', function(req, res){
         app.ask("ok try again, ready to add");
       }
       else {
-        database.unshift(note_content);
+        var newEntry = {
+          "source": "Google Assistant",
+          "content": note_content
+        }
+        database.unshift(newEntry);
         fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
         app.ask('note added');
       }
@@ -72,7 +77,7 @@ restService.post('/hook', function(req, res){
       var note_content = raw_content;
     }
     else {
-      var note_content = raw_content.split("continue note ")[1];
+      var note_content = raw_content.split(splitPhrase)1];
     }
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if(database.length > 0) {
@@ -84,7 +89,11 @@ restService.post('/hook', function(req, res){
         else {
           var latest_note = database.splice(0, 1);
           latest_note += " " + note_content;
-          database.unshift(latest_note);
+          var newEntry = {
+            "source": "Google Assistant",
+            "content": note_content
+          }
+          database.unshift(newEntry);
           fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
           app.ask("note appended");
         }
@@ -103,7 +112,7 @@ restService.post('/hook', function(req, res){
       var note_content = raw_content;
     }
     else {
-      var note_content = raw_content.split("edit note ")[1];
+      var note_content = raw_content.split(splitPhrase)[1];
     }
     var database = JSON.parse(fs.readFileSync(databaseFile));
     if(database.length > 0) {
@@ -114,7 +123,11 @@ restService.post('/hook', function(req, res){
           app.ask("ok try again, ready to edit");
         }
         else {
-          database.unshift(note_content);
+          var newEntry = {
+            "source": "Google Assistant",
+            "content": note_content
+          }
+          database.unshift(newEntry);
           fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
           app.ask("note edited");
         }
