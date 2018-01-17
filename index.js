@@ -50,7 +50,9 @@ restService.post('/hook', function(req, res){
   }
 
   function repeatNote(app) {
-    app.tell("here is your last note");
+    // app.tell("here is your last note");
+    var database = JSON.parse(fs.readFileSync(databaseFile));
+    app.ask(database[0])
   }
 
   const actionMap = new Map();
