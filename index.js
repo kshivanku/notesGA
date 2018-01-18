@@ -219,3 +219,14 @@ function getDate(){
   var final_time = date + ", " + time;
   return final_time;
 }
+
+
+//CHROME EXTENSION STUFF
+
+restService.post('/srtRequest', function(req, res){
+  console.log(req);
+  responseData = {
+    'txt': 'got your url'
+  }
+  res.send(responseData);
+}
