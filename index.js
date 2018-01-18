@@ -144,7 +144,7 @@ restService.post('/hook', function(req, res){
 
   function repeatNote(app) {
     var database = JSON.parse(fs.readFileSync(databaseFile));
-    app.ask(database[0])
+    app.ask(database[0].content);
   }
 
   function deleteAll(app) {
