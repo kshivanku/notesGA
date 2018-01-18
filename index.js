@@ -7,7 +7,7 @@ const moment = require('moment-timezone');
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
 var cancelPhrase = "scratch note";
-var splitPhrase = ". Begin ";
+var splitPhrase = "quote ";
 
 const restService = express();
 restService.use(express.static("public"));
