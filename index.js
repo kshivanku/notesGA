@@ -234,7 +234,7 @@ restService.post('/srtRequest', function(req, res) {
             throw err;
         console.log('subtitle files downloaded:', files);
         fs.createReadStream('public/videos/' + files[0])
-          .pipe(vtt())
+          .pipe(vtt2srt())
           .pipe(
             fs.createWriteStream('public/videos/subtitle_raw.srt')
             .on('finish', function(){
