@@ -219,45 +219,46 @@ restService.post('/srtRequest', function(req, res) {
     var videoYTid = requestData[ytLink[0]];
     var url = ytLink[0] + "=" + videoYTid;
 
-    // var options = {
-    // // Write automatic subtitle file (youtube only)
-    // auto: true,
-    // // Downloads all the available subtitles.
-    // all: false,
-    // // Languages of subtitles to download, separated by commas.
-    // lang: 'en',
-    // // The directory to save the downloaded files in.
-    // cwd: 'public/videos'
-    // };
-    // youtubedl.getSubs(url, options, function(err, files) {
-    //   if (err) throw err;
-    //   console.log('subtitle files downloaded:', files);
+    // ytdl.getInfo(url, (err, info) => {
+    //     if (err)
+    //         throw err;
+    //     var tracks = info.player_response.captions.playerCaptionsTracklistRenderer.captionTracks;
+    //     if (tracks && tracks.length) {
+    //         console.log('Found captions for', tracks.map(t => t.name.simpleText).join(', '));
+    //         var track = tracks.find(t => t.languageCode === 'en');
+    //         if (track) {
+    //             console.log('Retrieving captions:', track.name.simpleText);
+    //             console.log('URL', track.baseUrl);
+    //             var output = `${info.title}.${track.languageCode}.xml`;
+    //             console.log('Saving to', output);
+    //             https.get(track.baseUrl, (res) => {
+    //                 res.pipe(fs.createWriteStream(path.resolve('/app', output)));
+    //             });
+    //
+    //         } else {
+    //             console.log('Could not find captions for', lang);
+    //
+    //         }
+    //     } else {
+    //         console.log('No captions found for this video');
+    //     }
+    //
     // });
 
-    ytdl.getInfo(url, (err, info) => {
-        if (err)
-            throw err;
-        var tracks = info.player_response.captions.playerCaptionsTracklistRenderer.captionTracks;
-        if (tracks && tracks.length) {
-            console.log('Found captions for', tracks.map(t => t.name.simpleText).join(', '));
-            var track = tracks.find(t => t.languageCode === 'en');
-            if (track) {
-                console.log('Retrieving captions:', track.name.simpleText);
-                console.log('URL', track.baseUrl);
-                var output = `${info.title}.${track.languageCode}.xml`;
-                console.log('Saving to', output);
-                https.get(track.baseUrl, (res) => {
-                    res.pipe(fs.createWriteStream(path.resolve('/app', output)));
-                });
-
-            } else {
-                console.log('Could not find captions for', lang);
-
-            }
-        } else {
-            console.log('No captions found for this video');
-        }
-
+    url = "https://www.youtube.com/watch?v=mrE5EZr5ZVY"
+    var options = {
+    // Write automatic subtitle file (youtube only)
+    auto: true,
+    // Downloads all the available subtitles.
+    all: false,
+    // Languages of subtitles to download, separated by commas.
+    lang: 'en',
+    // The directory to save the downloaded files in.
+    cwd: 'public/videos'
+    };
+    youtubedl.getSubs(url, options, function(err, files) {
+      if (err) throw err;
+      console.log('subtitle files downloaded:', files);
     });
 
     responseData = {
