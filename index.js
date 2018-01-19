@@ -4,6 +4,7 @@ const DialogflowApp = require('actions-on-google').DialogflowApp;
 const fs = require('fs');
 const moment = require('moment-timezone');
 const youtubedl = require('youtube-dl');
+var getYoutubeSubtitles = require('@joegesualdo/get-youtube-subtitles-node');
 
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
@@ -231,16 +232,13 @@ restService.post('/srtRequest', function(req, res) {
     //   console.log('subtitle files downloaded:', files);
     // });
 
-    var options = {
-        // Downloads available thumbnail.
-        all: false,
-        // The directory to save the downloaded files in.
-        cwd: 'public/videos'
-    };
-    youtubedl.getThumbs(url, options, function(err, files) {
-        if (err) throw err;
-        console.log('thumbnail file downloaded:', files);
-    });
+    let videoId = videoYTid;
+
+    getYoutubeSubtitles(videoId).then(subtitles => {
+        console.log(subtitles)
+    }).catch(err => {
+        console.log(err)
+    })
 
     responseData = {
         'txt': 'got your url ' + url
