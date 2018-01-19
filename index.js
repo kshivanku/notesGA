@@ -227,12 +227,11 @@ function getDate(){
 //CHROME EXTENSION STUFF
 
 restService.post('/srtRequest', function(req, res){
-  var requestData = JSON.stringify(req.body);
-  console.log(requestData);
-  console.log(typeof(requestData));
-  console.log(requestData.url);
+  var requestData = req.body;
+  var ytLink = Object.keys(requestData);
+  var videoYTid = requestData[ytLink[0]];
   responseData = {
-    'txt': 'got your url'
+    'txt': 'got your url ' + ytLink[0] + videoYTid
   }
   res.send(responseData);
 })
