@@ -12,6 +12,9 @@ var splitPhrase = "quote ";
 const restService = express();
 restService.use(express.static("public"));
 restService.use(bodyParser.json());
+restService.use(bodyparser.urlencoded({
+  extented: true
+}));
 restService.listen((process.env.PORT || 5000), function(){
   console.log('server listening');
 })
