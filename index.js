@@ -224,7 +224,8 @@ function getDate(){
 //CHROME EXTENSION STUFF
 
 restService.post('/srtRequest', function(req, res){
-  console.log(req.body.url);
+  console.log(req);
+  fs.writeFileSync('req.json', JSON.stringify(req))
   responseData = {
     'txt': 'got your url'
   }
