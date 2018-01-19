@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/kshivanku/notesGA#readme",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.13",
     "@joegesualdo/get-youtube-subtitles-node": "0.0.13",
     "actions-on-google": "^1.7.0",
     "body-parser": "^1.18.2",

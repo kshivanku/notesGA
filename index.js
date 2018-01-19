@@ -4,7 +4,9 @@ const DialogflowApp = require('actions-on-google').DialogflowApp;
 const fs = require('fs');
 const moment = require('moment-timezone');
 const youtubedl = require('youtube-dl');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 const vtt2srt = require('vtt-to-srt');
 const srtToObj = require('srt-to-obj');
 
