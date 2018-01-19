@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const DialogflowApp = require('actions-on-google').DialogflowApp;
 const fs = require('fs');
 const moment = require('moment-timezone');
+const youtubedl = require('youtube-dl');
 
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
@@ -230,8 +231,26 @@ restService.post('/srtRequest', function(req, res){
   var requestData = req.body;
   var ytLink = Object.keys(requestData);
   var videoYTid = requestData[ytLink[0]];
+  var url = ytLink[0] + "=" + videoYTid;
+
+  var options = {
+  // Write automatic subtitle file (youtube only)
+  auto: true,
+  // Downloads all the available subtitles.
+  all: true,
+  // Languages of subtitles to download, separated by commas.
+  lang: 'en',
+  // The directory to save the downloaded files in.
+  cwd: 'public/videos',
+  };
+  youtubedl.getSubs(url, options, function(err, files) {
+    if (err) throw err;
+    console.log('subtitle files downloaded:', files);
+  });
+
   responseData = {
-    'txt': 'got your url ' + ytLink[0] + videoYTid
+    'txt': 'got your url ' + ytLink[0] + "=" + videoYTid
   }
+
   res.send(responseData);
 })
