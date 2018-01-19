@@ -249,7 +249,7 @@ restService.post('/srtRequest', function(req, res){
   });
 
   responseData = {
-    'txt': 'got your url ' + ytLink[0] + "=" + videoYTid
+    'txt': 'got your url ' + url
   }
 
   res.send(responseData);
