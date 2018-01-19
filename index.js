@@ -232,7 +232,7 @@ restService.post('/srtRequest', function(req, res){
   console.log(typeof(requestData));
   console.log(requestData.url);
   responseData = {
-    'txt': 'got your url ' + requestData.url
+    'txt': 'got your url'
   }
   res.send(responseData);
 })
