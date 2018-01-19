@@ -226,7 +226,7 @@ function getDate(){
 restService.post('/srtRequest', function(req, res){
   console.log(req.body);
   responseData = {
-    'txt': 'got your url ' + req.body.url
+    'txt': 'got your url'
   }
   res.send(responseData);
 })
