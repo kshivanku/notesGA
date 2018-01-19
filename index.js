@@ -299,5 +299,17 @@ function getSubtitleText(url) {
 
 restService.post('/saveNoteRequest', function(req, res) {
   var requestData = req.body;
-  console.log(requestData);
+  var note_content = Object.keys(requestData)[0];
+  var newEntry = {
+      "source": "Chrome Extension",
+      "date": getDate(),
+      "content": note_content
+  }
+  var database = JSON.parse(fs.readFileSync(databaseFile));
+  database.unshift(newEntry);
+  fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+  var responseData = {
+    'note_content': note_content
+  }
+  res.send(responseData)
 })
