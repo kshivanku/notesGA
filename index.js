@@ -11,6 +11,7 @@ const vtt2srt = require('vtt-to-srt');
 const srtToObj = require('srt-to-obj');
 
 var databaseFile = "public/database/database.json";
+var stubtitle_databaseFile = "public/database/subtitle_db.json";
 var cameFromUnknown = false;
 var cancelPhrase = "scratch note";
 var splitPhrase = "quote ";
@@ -220,42 +221,78 @@ restService.post('/srtRequest', function(req, res) {
     var ytLink = Object.keys(requestData);
     var videoYTid = requestData[ytLink[0]];
     var url = ytLink[0] + "=" + videoYTid;
-    var options = {
-        // Write automatic subtitle file (youtube only)
-        auto: true,
-        // Downloads all the available subtitles.
-        all: false,
-        // Languages of subtitles to download, separated by commas.
-        lang: 'en',
-        // The directory to save the downloaded files in.
-        cwd: 'public/videos'
-    };
 
-    youtubedl.getSubs(url, options, function(err, files) {
-        if (err) throw err;
-        console.log('subtitle files downloaded:', files);
-        if(files.length > 0) {
-          ffmpeg().input('public/videos/' + files[0]).output('public/videos/subtitle_raw.srt').on('end', function() {
-              console.log('Finished processing');
-              srtToObj('public/videos/subtitle_raw.srt').then(subtitle_parsed => {
-                  var subtitle_longtext = "";
-                  for (var i = 0; i < subtitle_parsed.length; i++) {
-                      subtitle_longtext += " " + subtitle_parsed[i].text;
-                  }
-                  responseData = {
-                      'subtitle_text': subtitle_longtext
-                  }
-                  res.send(responseData);
-              });
-          }).on('progress', function(progress) {
-              console.log('Processing: ' + progress.percent + '% done');
-          }).run();
-        }
-        else {
-          responseData = {
-              'subtitle_text': 'no subtitles found for this video'
+    var existing_subtitle_text = getSubtitleText(url);
+
+    if(existing_subtitle_text != null) {
+      responseData = {
+          'subtitle_text': existing_subtitle_text
+      }
+      res.send(responseData);
+    }
+    else {
+      var options = {
+          // Write automatic subtitle file (youtube only)
+          auto: true,
+          // Downloads all the available subtitles.
+          all: false,
+          // Languages of subtitles to download, separated by commas.
+          lang: 'en',
+          // The directory to save the downloaded files in.
+          cwd: 'public/videos'
+      };
+
+      youtubedl.getSubs(url, options, function(err, files) {
+          if (err) throw err;
+          console.log('subtitle files downloaded:', files);
+          if(files.length > 0) {
+            ffmpeg().input('public/videos/' + files[0]).output('public/videos/subtitle_raw.srt').on('end', function() {
+                console.log('Finished processing');
+                srtToObj('public/videos/subtitle_raw.srt').then(subtitle_parsed => {
+                    var subtitle_longtext = "";
+                    for (var i = 0; i < subtitle_parsed.length; i++) {
+                        subtitle_longtext += " " + subtitle_parsed[i].text;
+                    }
+                    var newDBentry = {
+                      "url": url,
+                      "subtitle_text": subtitle_longtext
+                    }
+                    addToSubtitleDB(newDBentry);
+                    responseData = {
+                        'subtitle_text': subtitle_longtext
+                    }
+                    res.send(responseData);
+                });
+            }).on('progress', function(progress) {
+                console.log('Processing: ' + progress.percent + '% done');
+            }).run();
           }
-          res.send(responseData);
-        }
-    });
+          else {
+            responseData = {
+                'subtitle_text': 'no subtitles found for this video'
+            }
+            res.send(responseData);
+          }
+      });
+    }
 })
+
+function addToSubtitleDB(newDBentry){
+  var subtitle_database = JSON.parse(fs.readFileSync(stubtitle_databaseFile));
+  subtitle_database.unshift(newDBentry);
+  fs.writeFileSync(stubtitle_databaseFile, JSON.stringify(subtitle_database, null, 2));
+}
+
+function getSubtitleText(url) {
+  var srtfound = false;
+  var subtitle_database = JSON.parse(fs.readFileSync(stubtitle_databaseFile));
+  for (var i = 0 ; i < subtitle_database.length ; i++) {
+    if (subtitle_database[i].url == url) {
+      srtfound = true;
+      return subtitle_database[i].subtitle_text;
+    }
+  }
+  if(!srtfound){
+    return null;
+  }
+}
