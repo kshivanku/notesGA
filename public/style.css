@@ -31,14 +31,14 @@ body {
 
 .container h1 {
   display: inline-block;
-  color: #fff;
+  color: #F6F7F8;
   font-size: 24px;
   line-height: 60px;
 }
 
 .textbutton {
   display: inline-block;
-  color: #fff;
+  color: #F6F7F8;
   text-transform: uppercase;
   float: right;
   cursor: pointer;
@@ -62,5 +62,5 @@ body {
 
 .source {
   font-size: 12px;
-  color: #d0d0d0;
+  color: #C8D7E4;
 }
