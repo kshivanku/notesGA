@@ -5,7 +5,7 @@ const fs = require('fs');
 const moment = require('moment-timezone');
 const youtubedl = require('youtube-dl');
 const ffmpeg = require('fluent-ffmpeg');
-const parser = require('subtitle-parser');
+const srtToObj = require('srt-to-obj');
 
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
@@ -219,37 +219,34 @@ restService.post('/srtRequest', function(req, res) {
     var url = ytLink[0] + "=" + videoYTid;
 
     var options = {
-    // Write automatic subtitle file (youtube only)
-    auto: true,
-    // Downloads all the available subtitles.
-    all: false,
-    // Languages of subtitles to download, separated by commas.
-    lang: 'en',
-    // The directory to save the downloaded files in.
-    cwd: 'public/videos'
+        // Write automatic subtitle file (youtube only)
+        auto: true,
+        // Downloads all the available subtitles.
+        all: false,
+        // Languages of subtitles to download, separated by commas.
+        lang: 'en',
+        // The directory to save the downloaded files in.
+        cwd: 'public/videos'
     };
     youtubedl.getSubs(url, options, function(err, files) {
-      if (err) throw err;
-      console.log('subtitle files downloaded:', files);
-      ffmpeg()
-            .input('public/videos/' + files[0])
-            .output('public/videos/subtitle_raw.srt')
-            .on('end', function() {
-                console.log('Finished processing');
-                var srt = fs.readFileSync('public/videos/subtitle_raw.srt');
-                var subtitle_parsed = parser.fromSrt(srt, true);
+        if (err)
+            throw err;
+        console.log('subtitle files downloaded:', files);
+        ffmpeg().input('public/videos/' + files[0]).output('public/videos/subtitle_raw.srt')
+        .on('end', function() {
+            console.log('Finished processing');
+            srtToObj('public/videos/subtitle_raw.srt').then(subtitle_parsed => {
                 var subtitle_longtext = "";
-                for (var i = 0 ; i < subtitle_parsed.length ; i++) {
-                  subtitle_longtext += " " + subtitle_parsed[i].text;
+                for (var i = 0; i < subtitle_parsed.length; i++) {
+                    subtitle_longtext += " " + subtitle_parsed[i].text;
                 }
                 responseData = {
                     'subtitle_text': subtitle_longtext
                 }
                 res.send(responseData);
-            })
-            .on('progress', function(progress) {
-              console.log('Processing: ' + progress.percent + '% done');
-            })
-            .run();
+            });
+        }).on('progress', function(progress) {
+            console.log('Processing: ' + progress.percent + '% done');
+        }).run();
     });
 })
