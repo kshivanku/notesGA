@@ -12,5 +12,8 @@ $(document).ready(function(){
   $('#deleteAllBtn').click(function(){
     $('#notes_list').empty();
     $('#notes_list').append('<div class="newEntry"><p class="content">No note yet</p><p class="source">No Source</p></div>');
+    $.get('/deleteAll', function(data){
+      console.log(data);
+    })
   })
 });

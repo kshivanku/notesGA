@@ -313,3 +313,13 @@ restService.post('/saveNoteRequest', function(req, res) {
   }
   res.send(responseData)
 })
+
+restService.get('/deleteAll', function(req, res){
+  var baseEntry = {
+    "source": "No source",
+    "date": "Time",
+    "content": "No note yet"
+  }
+  fs.writeFileSync(databaseFile, JSON.stringify(baseEntry, null, 2));
+  res.send("database cleared");
+})
