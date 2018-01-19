@@ -232,12 +232,11 @@ restService.post('/srtRequest', function(req, res) {
     //   console.log('subtitle files downloaded:', files);
     // });
 
-    let videoId = videoYTid;
-
-    getYoutubeSubtitles(videoId, {type: 'either'}).then(subtitles => {
-        console.log(subtitles)
+    getYoutubeSubtitles(videoYTid, {type: 'either'}).then(subtitles => {
+        console.log("here");
+        console.log(subtitles);
     }).catch(err => {
-        console.log(err)
+        console.log(err);
     })
 
     responseData = {
