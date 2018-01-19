@@ -247,7 +247,7 @@ restService.post('/srtRequest', function(req, res) {
                 var output = `${info.title}.${track.languageCode}.xml`;
                 console.log('Saving to', output);
                 https.get(track.baseUrl, (res) => {
-                    res.pipe(fs.createWriteStream(path.resolve('public/videos', output)));
+                    res.pipe(fs.createWriteStream(path.resolve('/app/public/videos', output)));
                 });
 
             } else {
