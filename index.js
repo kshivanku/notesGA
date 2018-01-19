@@ -4,7 +4,6 @@ const DialogflowApp = require('actions-on-google').DialogflowApp;
 const fs = require('fs');
 const moment = require('moment-timezone');
 const youtubedl = require('youtube-dl');
-const getYoutubeSubtitles = require('@joegesualdo/get-youtube-subtitles-node');
 
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
@@ -232,12 +231,20 @@ restService.post('/srtRequest', function(req, res) {
     //   console.log('subtitle files downloaded:', files);
     // });
 
-    getYoutubeSubtitles(videoYTid, {type: 'either'}).then(subtitles => {
-        console.log("here");
-        console.log(subtitles);
-    }).catch(err => {
-        console.log(err);
-    })
+    var video = youtubedl(url,
+      // Optional arguments passed to youtube-dl.
+      ['--format=18'],
+      // Additional options can be given for calling `child_process.execFile()`.
+      { cwd: 'public/videos' });
+
+    // Will be called when the download starts.
+    video.on('info', function(info) {
+      console.log('Download started');
+      console.log('filename: ' + info.filename);
+      console.log('size: ' + info.size);
+    });
+
+    video.pipe(fs.createWriteStream('myvideo.mp4'));
 
     responseData = {
         'txt': 'got your url ' + url
