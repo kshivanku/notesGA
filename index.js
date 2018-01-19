@@ -230,6 +230,7 @@ restService.post('/srtRequest', function(req, res){
   var requestData = req.body;
   console.log(requestData);
   console.log(typeof(requestData));
+  console.log(requestData.url);
   responseData = {
     'txt': 'got your url ' + requestData.url
   }
