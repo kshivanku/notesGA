@@ -229,10 +229,11 @@ restService.post('/srtRequest', function(req, res) {
         cwd: 'public/videos'
     };
     youtubedl.getSubs(url, options, function(err, files) {
-        if (err)
-            throw err;
+        if (err) throw err;
         console.log('subtitle files downloaded:', files);
-        ffmpeg().input('public/videos/' + files[0]).output('public/videos/subtitle_raw.srt')
+        ffmpeg()
+        .input('public/videos/' + files[0])
+        .output('public/videos/subtitle_raw.srt')
         .on('end', function() {
             console.log('Finished processing');
             srtToObj('public/videos/subtitle_raw.srt').then(subtitle_parsed => {
