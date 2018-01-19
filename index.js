@@ -4,9 +4,8 @@ const DialogflowApp = require('actions-on-google').DialogflowApp;
 const fs = require('fs');
 const moment = require('moment-timezone');
 const youtubedl = require('youtube-dl');
-const ytdl = require('ytdl-core');
-const path  = require('path');
-const https = require('https');
+const ffmpeg = require('fluent-ffmpeg');
+const parser = require('subtitle-parser');
 
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
@@ -219,33 +218,6 @@ restService.post('/srtRequest', function(req, res) {
     var videoYTid = requestData[ytLink[0]];
     var url = ytLink[0] + "=" + videoYTid;
 
-    // ytdl.getInfo(url, (err, info) => {
-    //     if (err)
-    //         throw err;
-    //     var tracks = info.player_response.captions.playerCaptionsTracklistRenderer.captionTracks;
-    //     if (tracks && tracks.length) {
-    //         console.log('Found captions for', tracks.map(t => t.name.simpleText).join(', '));
-    //         var track = tracks.find(t => t.languageCode === 'en');
-    //         if (track) {
-    //             console.log('Retrieving captions:', track.name.simpleText);
-    //             console.log('URL', track.baseUrl);
-    //             var output = `${info.title}.${track.languageCode}.xml`;
-    //             console.log('Saving to', output);
-    //             https.get(track.baseUrl, (res) => {
-    //                 res.pipe(fs.createWriteStream(path.resolve('/app', output)));
-    //             });
-    //
-    //         } else {
-    //             console.log('Could not find captions for', lang);
-    //
-    //         }
-    //     } else {
-    //         console.log('No captions found for this video');
-    //     }
-    //
-    // });
-
-    // url = "https://www.youtube.com/watch?v=mrE5EZr5ZVY"
     var options = {
     // Write automatic subtitle file (youtube only)
     auto: true,
@@ -259,10 +231,25 @@ restService.post('/srtRequest', function(req, res) {
     youtubedl.getSubs(url, options, function(err, files) {
       if (err) throw err;
       console.log('subtitle files downloaded:', files);
+      ffmpeg()
+            .input('public/videos/' + files[0])
+            .output('public/videos/subtitle_raw.srt')
+            .on('end', function() {
+                console.log('Finished processing');
+                var srt = fs.readFileSync('public/videos/subtitle_raw.srt');
+                var subtitle_parsed = parser.fromSrt(srt, true);
+                var subtitle_longtext = "";
+                for (var i = 0 ; i < subtitle_parsed.length ; i++) {
+                  subtitle_longtext += " " + subtitle_parsed[i].text;
+                }
+                responseData = {
+                    'subtitle_text': subtitle_longtext
+                }
+                res.send(responseData);
+            })
+            .on('progress', function(progress) {
+              console.log('Processing: ' + progress.percent + '% done');
+            })
+            .run();
     });
-
-    responseData = {
-        'txt': 'got your url ' + url
-    }
-    res.send(responseData);
 })
