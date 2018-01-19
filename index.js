@@ -234,7 +234,7 @@ restService.post('/srtRequest', function(req, res) {
 
     let videoId = videoYTid;
 
-    getYoutubeSubtitles(videoId).then(subtitles => {
+    getYoutubeSubtitles(videoId, {type: 'either'}).then(subtitles => {
         console.log(subtitles)
     }).catch(err => {
         console.log(err)
