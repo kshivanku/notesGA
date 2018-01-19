@@ -5,6 +5,7 @@ const fs = require('fs');
 const moment = require('moment-timezone');
 const youtubedl = require('youtube-dl');
 const ffmpeg = require('fluent-ffmpeg');
+const vtt2srt = require('vtt-to-srt');
 const srtToObj = require('srt-to-obj');
 
 var databaseFile = "public/database/database.json";
@@ -229,25 +230,46 @@ restService.post('/srtRequest', function(req, res) {
         cwd: 'public/videos'
     };
     youtubedl.getSubs(url, options, function(err, files) {
-        if (err) throw err;
+        if (err)
+            throw err;
         console.log('subtitle files downloaded:', files);
-        ffmpeg()
-        .input('public/videos/' + files[0])
-        .output('public/videos/subtitle_raw.srt')
-        .on('end', function() {
-            console.log('Finished processing');
-            srtToObj('public/videos/subtitle_raw.srt').then(subtitle_parsed => {
-                var subtitle_longtext = "";
-                for (var i = 0; i < subtitle_parsed.length; i++) {
-                    subtitle_longtext += " " + subtitle_parsed[i].text;
-                }
-                responseData = {
-                    'subtitle_text': subtitle_longtext
-                }
-                res.send(responseData);
-            });
-        }).on('progress', function(progress) {
-            console.log('Processing: ' + progress.percent + '% done');
-        }).run();
+        fs.createReadStream('public/videos/' + files[0])
+          .pipe(vtt())
+          .pipe(
+            fs.createWriteStream('public/videos/subtitle_raw.srt')
+            .on('finish', function(){
+              srtToObj('public/videos/subtitle_raw.srt').then(subtitle_parsed => {
+                  var subtitle_longtext = "";
+                  for (var i = 0; i < subtitle_parsed.length; i++) {
+                      subtitle_longtext += " " + subtitle_parsed[i].text;
+                  }
+                  responseData = {
+                      'subtitle_text': subtitle_longtext
+                  }
+                  res.send(responseData);
+              });
+            })
+          );
+
+
+
+
+
+
+        // ffmpeg().input('public/videos/' + files[0]).output('public/videos/subtitle_raw.srt').on('end', function() {
+        //     console.log('Finished processing');
+        //     srtToObj('public/videos/subtitle_raw.srt').then(subtitle_parsed => {
+        //         var subtitle_longtext = "";
+        //         for (var i = 0; i < subtitle_parsed.length; i++) {
+        //             subtitle_longtext += " " + subtitle_parsed[i].text;
+        //         }
+        //         responseData = {
+        //             'subtitle_text': subtitle_longtext
+        //         }
+        //         res.send(responseData);
+        //     });
+        // }).on('progress', function(progress) {
+        //     console.log('Processing: ' + progress.percent + '% done');
+        // }).run();
     });
 })

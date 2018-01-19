@@ -27,6 +27,7 @@
     "moment-timezone": "^0.5.14",
     "path": "^0.12.7",
     "srt-to-obj": "0.0.3",
+    "vtt-to-srt": "^0.1.0",
     "youtube-dl": "^1.12.2",
     "ytdl-core": "^0.18.7"
   }
