@@ -233,5 +233,5 @@ restService.post('/srtRequest', function(req, res){
   responseData = {
     'txt': 'got your url ' + requestData.url
   }
-  res.send(JSON.stringify(responseData));
+  res.send(responseData);
 })
