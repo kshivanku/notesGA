@@ -237,11 +237,11 @@ restService.post('/srtRequest', function(req, res){
   // Write automatic subtitle file (youtube only)
   auto: true,
   // Downloads all the available subtitles.
-  all: true,
+  all: false,
   // Languages of subtitles to download, separated by commas.
   lang: 'en',
   // The directory to save the downloaded files in.
-  cwd: 'public/videos',
+  cwd: 'public/videos'
   };
   youtubedl.getSubs(url, options, function(err, files) {
     if (err) throw err;
@@ -251,6 +251,5 @@ restService.post('/srtRequest', function(req, res){
   responseData = {
     'txt': 'got your url ' + url
   }
-
   res.send(responseData);
 })
