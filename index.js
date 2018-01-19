@@ -4,7 +4,7 @@ const DialogflowApp = require('actions-on-google').DialogflowApp;
 const fs = require('fs');
 const moment = require('moment-timezone');
 const youtubedl = require('youtube-dl');
-var getYoutubeSubtitles = require('@joegesualdo/get-youtube-subtitles-node');
+const getYoutubeSubtitles = require('@joegesualdo/get-youtube-subtitles-node');
 
 var databaseFile = "public/database/database.json";
 var cameFromUnknown = false;
