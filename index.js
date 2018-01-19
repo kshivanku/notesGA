@@ -240,7 +240,7 @@ restService.post('/srtRequest', function(req, res) {
         var tracks = info.player_response.captions.playerCaptionsTracklistRenderer.captionTracks;
         if (tracks && tracks.length) {
             console.log('Found captions for', tracks.map(t => t.name.simpleText).join(', '));
-            var track = tracks.find(t => t.languageCode === lang);
+            var track = tracks.find(t => t.languageCode === 'en');
             if (track) {
                 console.log('Retrieving captions:', track.name.simpleText);
                 console.log('URL', track.baseUrl);
