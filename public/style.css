@@ -71,6 +71,7 @@ body {
 
 .text_area {
   display: inline-block;
+  width: 80%;
 }
 
 .delete_btn {
