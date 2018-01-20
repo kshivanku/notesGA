@@ -5,12 +5,17 @@ $(document).ready(function(){
   $('#deleteAllBtn').click(function(){
     // $('#notes_list').empty();
     // $('#notes_list').append('<div class="newEntry"><p class="content">No note yet</p><p class="source">No Source</p></div>');
-    $.get('/deleteAll', function(data){
-      populateNotes();
-    })
+    $.get('/deleteAll', deletionComplete)
   })
   $('body').on('click', '.delete_btn', function(){
-    console.log($(this));
+    $.ajax({
+      type: 'POST',
+      url: 'https://audionotes.herokuapp.com/deleteOne',
+      data: $(this)[0].id,
+      success: deletionComplete,
+      dataType: 'text'
+    })
+    // console.log($(this)[0].id);
   })
   function populateNotes(){
     $.getJSON(databaseFile, function(data){
@@ -29,5 +34,8 @@ $(document).ready(function(){
         }
       }
     });
+  }
+  function deletionComplete(data) {
+    populateNotes();
   }
 });

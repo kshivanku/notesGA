@@ -325,3 +325,20 @@ restService.get('/deleteAll', function(req, res){
   fs.writeFileSync(databaseFile, JSON.stringify(baseEntry, null, 2));
   res.send("database cleared");
 })
+
+restService.post('/deleteOne', function(req, res) {
+  var requestData = req.body;
+  var delete_content = Object.keys(requestData)[0];
+  var database = JSON.parse(fs.readFileSync(databaseFile));
+  for(var i = 0 ; i < database.length ; i++) {
+    if(database[i].content == delete_content) {
+      database.splice(i, 1);
+      i = database.length;
+    }
+  }
+  fs.writeFileSync(databaseFile, JSON.stringify(database, null, 2));
+  var responseData = {
+    'delete_content': delete_content
+  }
+  res.send(responseData)
+})
