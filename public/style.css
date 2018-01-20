@@ -68,3 +68,21 @@ body {
   font-size: 12px;
   color: #C8D7E4;
 }
+
+.text_area {
+  display: inline-block;
+}
+
+.delete_btn {
+  float: right;
+  width: 18px;
+  height: 18px;
+  background: url(trash_passive.png) white;
+  background-size: cover;
+  cursor: pointer;
+}
+
+.delete_btn:hover{
+  background: url(trash_active.png) white;
+  background-size: cover;
+}
