@@ -320,7 +320,7 @@ restService.get('/deleteAll', function(req, res){
   var baseEntry = [{
     "source": "No source",
     "date": "Time",
-    "content": "No note yet"
+    "content": "Sample Note"
   }]
   fs.writeFileSync(databaseFile, JSON.stringify(baseEntry, null, 2));
   res.send("database cleared");
