@@ -331,7 +331,7 @@ restService.post('/deleteOne', function(req, res) {
   var delete_content = Object.keys(requestData)[0];
   var database = JSON.parse(fs.readFileSync(databaseFile));
   for(var i = 0 ; i < database.length ; i++) {
-    if(database[i].content == delete_content) {
+    if(database[i].content.substring(0, 50) == delete_content) {
       database.splice(i, 1);
       i = database.length;
     }
